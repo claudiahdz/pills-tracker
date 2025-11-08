@@ -103,7 +103,7 @@ function Home() {
 
     setPills(newPills)
     setNewPill({ name: '', checked: false, time: ':', period: null })
-    setSelectedTime(['breakfast'])
+    setSelectedTime([])
   }
 
   const editPill = (timeOfDay: TimeOfDayType, index: number, type: 'toggle' | 'delete') => {
@@ -136,7 +136,7 @@ function Home() {
       <div className="max-w-4xl mx-auto">
         <div className="max-w-[800px] mx-auto bg-white rounded-lg shadow-lg p-6 md:p-8">
           <h1 className="text-3xl md:text-4xl font-bold">
-            <span className="bg-linear-to-br from-purple-600 to-violet-600 bg-clip-text text-transparent">Control de Pastillas</span> 💊
+            <span className="bg-linear-to-br from-purple-600 to-violet-600 bg-clip-text text-transparent">Pastillas</span> 💊
           </h1>
           <div>
             <h3 className="mt-3 text-base md:text-lg text-slate-500 font-medium">{date}</h3>
