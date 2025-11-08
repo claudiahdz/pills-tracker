@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@layer base {
+  h1 {
+    @apply text-3xl font-semibold text-gray-800 tracking-wide;
+  }
+  
+  /* Improve touch targets on mobile */
+  * {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+#root {
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
