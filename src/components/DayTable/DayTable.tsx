@@ -20,7 +20,7 @@ const DayTable = ({ pills, editPill }: DayTableProps) => {
                   { pills.filter(p => p.period === period).map((pill, index) => (
                     <div key={index} className='flex items-center gap-4 py-6 px-5 border-b border-slate-100 last:border-b-0 hover:bg-slate-50 transition-all'>
                       <input 
-                        type='checkbox' 
+                        type='checkbox'
                         id={`${period}-${index}`} 
                         checked={pill.checked}
                         onChange={() => editPill(period, index, 'toggle')}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import DayTable from "../components/DayTable/DayTable" 
+import DayTable from "../components/DayTable/DayTable"
 import InputPill from "../components/InputPill/InputPill"
 import { Collapse } from '@kunukn/react-collapse'
 
@@ -22,10 +22,10 @@ function Home() {
       const savedPills = localStorage.getItem(PILLS_STORAGE_KEY);
       const lastDate = localStorage.getItem(LAST_DATE_KEY);
       const today = getTodayString();
-      
+
       if (savedPills) {
         const parsedPills = JSON.parse(savedPills);
-        
+
         // If it's a new day, reset all checked values
         if (lastDate !== today) {
           const resetPills = parsedPills.map((pill: Pill) => ({
@@ -36,16 +36,30 @@ function Home() {
           localStorage.setItem(LAST_DATE_KEY, today);
           return resetPills;
         }
-        
+
         return parsedPills;
       }
-      
-      // First time - set today's date
+
+      // First time - set today's date and return example pill
       localStorage.setItem(LAST_DATE_KEY, today);
-      return [];
+      return [
+        {
+          name: 'Vitamina C',
+          checked: false,
+          time: '08:00',
+          period: 'breakfast'
+        }
+      ];
     } catch (error) {
       console.error('Error loading pills from localStorage:', error);
-      return [];
+      return [
+        {
+          name: 'Vitamina C',
+          checked: false,
+          time: '08:00',
+          period: 'breakfast'
+        }
+      ];
     }
   })
   const [newPill, setNewPill] = useState<Pill>({ name: '', checked: false, time: ':', period: null })
@@ -65,11 +79,11 @@ function Home() {
 
   // Get currentDate
   const currentDate = new Date()
-  const date = currentDate.toLocaleDateString('es-ES', { 
+  const date = currentDate.toLocaleDateString('es-ES', {
     weekday: 'long',
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
   })
 
   const onToggleAddPill = () => setIsAddPillOpen((s) => !s)
@@ -77,8 +91,8 @@ function Home() {
 
   const addPill = () => {
     if (!newPill.name.trim()) return; // no pill to add
-    
-    const newPills = [ ...pills ];
+
+    const newPills = [...pills];
     selectedTime.forEach(t => {
       const pill = { ...newPill }
       pill.period = t
@@ -93,7 +107,7 @@ function Home() {
   const editPill = (timeOfDay: TimeOfDayType, index: number, type: 'toggle' | 'delete') => {
     const pill = pills.filter(p => p.period === timeOfDay)[index]
     const indexOfPill = pills.indexOf(pill);
-    let newPills = [ ...pills ];
+    let newPills = [...pills];
 
     if (type === 'toggle') {
       newPills[indexOfPill] = {
@@ -111,8 +125,8 @@ function Home() {
 
   const checkSelectedTime = (el: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = el.target.checked
-    isChecked? setSelectedTime([...selectedTime, el.target.value as TimeOfDayType])
-    : setSelectedTime(selectedTime.filter(t => t !== el.target.value));
+    isChecked ? setSelectedTime([...selectedTime, el.target.value as TimeOfDayType])
+      : setSelectedTime(selectedTime.filter(t => t !== el.target.value));
   }
 
   return (
@@ -128,23 +142,23 @@ function Home() {
           <button
             className='mt-6 w-full md:w-auto px-8 py-3 text-base font-semibold bg-linear-to-br from-purple-500 to-violet-500 text-white rounded-lg hover:from-purple-600 hover:to-violet-600 active:scale-95 focus:outline-none focus:ring-4 focus:ring-purple-200 transition-all duration-200 shadow-md hover:shadow-lg'
             onClick={onToggleAddPill}
-          > { isAddPillOpen? '✕ Cerrar' : '+ Agregar Pastilla' }</button>
-        <Collapse
-          isOpen={isAddPillOpen}
-          transition='height 300ms cubic-bezier(0.4, 0, 0.2, 1)'
-        >
-          <InputPill 
-            newPill={newPill}
-            setNewPill={setNewPill}
-            selectedTime={selectedTime}
-            checkSelectedTime={checkSelectedTime}
-            addPill={addPill}
+          > {isAddPillOpen ? '✕ Cerrar' : '+ Agregar Pastilla'}</button>
+          <Collapse
+            isOpen={isAddPillOpen}
+            transition='height 300ms cubic-bezier(0.4, 0, 0.2, 1)'
+          >
+            <InputPill
+              newPill={newPill}
+              setNewPill={setNewPill}
+              selectedTime={selectedTime}
+              checkSelectedTime={checkSelectedTime}
+              addPill={addPill}
+            />
+          </Collapse>
+          <DayTable
+            pills={pills}
+            editPill={editPill}
           />
-        </Collapse>
-        <DayTable 
-          pills={pills}
-          editPill={editPill} 
-        />
         </div>
       </div>
     </div>
