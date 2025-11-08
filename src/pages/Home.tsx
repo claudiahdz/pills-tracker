@@ -1,21 +1,70 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import DayTable from "../components/DayTable/DayTable" 
 import InputPill from "../components/InputPill/InputPill"
 import { Collapse } from '@kunukn/react-collapse'
 
 import { type Pill, type TimeOfDayType } from '../types';
 
+const PILLS_STORAGE_KEY = 'pills-tracker-data';
+const LAST_DATE_KEY = 'pills-tracker-last-date';
+
+// Helper function to get today's date string (YYYY-MM-DD format)
+const getTodayString = () => {
+  const today = new Date();
+  return today.toISOString().split('T')[0];
+};
+
 function Home() {
 
-  // Initialize state
-  const [pills, setPills] = useState<Pill[]>([])
+  // Initialize state - Load pills from localStorage
+  const [pills, setPills] = useState<Pill[]>(() => {
+    try {
+      const savedPills = localStorage.getItem(PILLS_STORAGE_KEY);
+      const lastDate = localStorage.getItem(LAST_DATE_KEY);
+      const today = getTodayString();
+      
+      if (savedPills) {
+        const parsedPills = JSON.parse(savedPills);
+        
+        // If it's a new day, reset all checked values
+        if (lastDate !== today) {
+          const resetPills = parsedPills.map((pill: Pill) => ({
+            ...pill,
+            checked: false
+          }));
+          // Update the date in localStorage
+          localStorage.setItem(LAST_DATE_KEY, today);
+          return resetPills;
+        }
+        
+        return parsedPills;
+      }
+      
+      // First time - set today's date
+      localStorage.setItem(LAST_DATE_KEY, today);
+      return [];
+    } catch (error) {
+      console.error('Error loading pills from localStorage:', error);
+      return [];
+    }
+  })
   const [newPill, setNewPill] = useState<Pill>({ name: '', checked: false, time: ':', period: null })
   const [selectedTime, setSelectedTime] = useState<TimeOfDayType[]>(['breakfast'])
   const [isAddPillOpen, setIsAddPillOpen] = useState(false)
 
+  // Save pills to localStorage whenever they change
+  useEffect(() => {
+    try {
+      localStorage.setItem(PILLS_STORAGE_KEY, JSON.stringify(pills));
+      // Update the date whenever we save pills
+      localStorage.setItem(LAST_DATE_KEY, getTodayString());
+    } catch (error) {
+      console.error('Error saving pills to localStorage:', error);
+    }
+  }, [pills])
+
   // Get currentDate
   const currentDate = new Date()
-  // const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' } as const;
   const date = currentDate.toLocaleDateString('es-ES', { 
     weekday: 'long',
     year: 'numeric', 
