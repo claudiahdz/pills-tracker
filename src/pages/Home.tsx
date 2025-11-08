@@ -9,8 +9,8 @@ function Home() {
 
   // Initialize state
   const [pills, setPills] = useState<Pill[]>([])
-  const [newPill, setNewPill] = useState<Pill>({ name: '', checked: false, time: ':', period: '' })
-  const [selectedTime, setSelectedTime] = useState<string[]>(['morning'])
+  const [newPill, setNewPill] = useState<Pill>({ name: '', checked: false, time: ':', period: null })
+  const [selectedTime, setSelectedTime] = useState<TimeOfDayType[]>(['breakfast'])
   const [isAddPillOpen, setIsAddPillOpen] = useState(false)
 
   // Get currentDate
@@ -37,8 +37,8 @@ function Home() {
     })
 
     setPills(newPills)
-    setNewPill({ name: '', checked: false, time: ':', period: '' })
-    setSelectedTime(['morning'])
+    setNewPill({ name: '', checked: false, time: ':', period: null })
+    setSelectedTime(['breakfast'])
   }
 
   const editPill = (timeOfDay: TimeOfDayType, index: number, type: 'toggle' | 'delete') => {
@@ -62,7 +62,7 @@ function Home() {
 
   const checkSelectedTime = (el: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = el.target.checked
-    isChecked? setSelectedTime([...selectedTime, el.target.value]) 
+    isChecked? setSelectedTime([...selectedTime, el.target.value as TimeOfDayType])
     : setSelectedTime(selectedTime.filter(t => t !== el.target.value));
   }
 

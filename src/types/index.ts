@@ -4,7 +4,7 @@ export type Pill = {
   name: string; 
   checked: boolean, 
   time: string, 
-  period: TimeOfDayType 
+  period: TimeOfDayType | null
 };
 
 // get the type of elements accessible by a numeric index
