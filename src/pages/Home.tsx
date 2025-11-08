@@ -63,7 +63,7 @@ function Home() {
     }
   })
   const [newPill, setNewPill] = useState<Pill>({ name: '', checked: false, time: ':', period: null })
-  const [selectedTime, setSelectedTime] = useState<TimeOfDayType[]>(['breakfast'])
+  const [selectedTime, setSelectedTime] = useState<TimeOfDayType[]>([])
   const [isAddPillOpen, setIsAddPillOpen] = useState(false)
 
   // Save pills to localStorage whenever they change
@@ -85,6 +85,8 @@ function Home() {
     month: 'long',
     day: 'numeric'
   })
+    .replace(/^\w/, c => c.toUpperCase()) // Capitalize first letter (weekday)
+    .replace(/(\sde\s)(\w)/, (_, p1, p2) => `${p1}${p2.toUpperCase()}`) // Capitalize month
 
   const onToggleAddPill = () => setIsAddPillOpen((s) => !s)
 

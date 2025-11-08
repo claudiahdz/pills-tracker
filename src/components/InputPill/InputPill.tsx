@@ -94,7 +94,12 @@ const InputPill = ({ newPill, setNewPill, selectedTime, checkSelectedTime, addPi
       </div>
       <button
         onClick={addPill}
-        className='mt-6 w-full md:w-auto px-8 py-3 text-base font-semibold bg-linear-to-r from-purple-500 to-violet-500 text-white rounded-lg hover:from-purple-600 hover:to-violet-600 active:scale-95 focus:outline-none focus:ring-4 focus:ring-purple-200 transition-all duration-200 shadow-md hover:shadow-lg'
+        disabled={!newPill.name || selectedTime.length === 0}
+        className={`mt-6 w-full md:w-auto px-8 py-3 text-base font-semibold rounded-lg transition-all duration-200 ${
+          !newPill.name || selectedTime.length === 0
+            ? 'bg-gray-300 text-gray-500 cursor-not-allowed shadow-sm'
+            : 'bg-linear-to-r from-purple-500 to-violet-500 text-white hover:from-purple-600 hover:to-violet-600 active:scale-95 focus:outline-none focus:ring-4 focus:ring-purple-200 shadow-md hover:shadow-lg'
+        }`}
       >
         Agregar
       </button>
