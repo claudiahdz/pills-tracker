@@ -1,5 +1,7 @@
 import { type Pill, type TimeOfDayType } from '../../types';
-import { TimePeriods, TimePeriodLabels } from '../../constants'
+import { TimePeriods, TimePeriodLabels } from '../../constants';
+
+import styles from './DayTable.module.css';
 
 interface DayTableProps {
   pills: Pill[];
@@ -8,7 +10,7 @@ interface DayTableProps {
 
 const DayTable = ({ pills, editPill }: DayTableProps) => {
     return (
-      <div className='border-2 border-slate-200 rounded-lg overflow-hidden mt-6 mb-5 w-full shadow-lg bg-white'>
+      <div className={`${styles.myClass} border-2 border-slate-200 rounded-lg overflow-hidden mt-6 mb-5 w-full shadow-lg bg-white`}>
         {
           TimePeriods.map((period, index) => {
             return (
