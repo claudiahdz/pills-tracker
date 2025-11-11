@@ -18,7 +18,7 @@ const getDefaultPills = (): Pill[] => [
   }
 ];
 
-const loadPills = (): Pill[] => {
+export const loadPills = (): Pill[] => {
   try {
     const savedPills = localStorage.getItem(PILLS_STORAGE_KEY);
     const lastDate = localStorage.getItem(LAST_DATE_KEY);
@@ -50,7 +50,7 @@ const loadPills = (): Pill[] => {
   }
 };
 
-const savePills = (pills: Pill[]): void => {
+export const savePills = (pills: Pill[]): void => {
   try {
     localStorage.setItem(PILLS_STORAGE_KEY, JSON.stringify(pills));
     localStorage.setItem(LAST_DATE_KEY, getTodayString());
